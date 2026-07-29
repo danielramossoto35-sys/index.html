@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuateVerde | Transformación Ecológica Urbana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --jungla-dark: #0A1F1C;
+            --jungla-base: #123524;
+            --jungla-mid: #2E5A44;
+            --verde-neon: #39FF14;
+            --verde-hoja: #4E9F3D;
+            --crema-liana: #E8ECD7;
+            --dorado-sol: #FFB319;
+            --sombra-bosque: rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--jungla-dark);
+            color: var(--crema-liana);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVEGACIÓN TIPO JUNGLA --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 31, 28, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 2px solid var(--jungla-mid);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--verde-neon);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 25px;
+            height: 25px;
+            background: var(--verde-neon);
+            border-radius: 50% 0 50% 0;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.2rem;
+            list-style: none;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a {
+            color: var(--crema-liana);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--verde-neon);
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(180deg, rgba(10, 31, 28, 0.6) 0%, var(--jungla-dark) 100%), 
+                        url('https://images.unsplash.com/photo-1511497584788-8767611136f6?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 15px var(--sombra-bosque);
+        }
+
+        .hero h1 span {
+            color: var(--verde-neon);
+            font-style: italic;
+        }
+
+        .hero p {
+            max-width: 700px;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--crema-liana);
+        }
+
+        .cta-btn {
+            background: var(--verde-hoja);
+            color: #fff;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 5px 20px rgba(78, 159, 61, 0.4);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            background: var(--verde-neon);
+            color: var(--jungla-dark);
+        }
+
+        /* --- CONTENEDOR PRINCIPAL Y VISTAS --- */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .page-view {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ESTRUCTURA DE SUBPÁGINAS --- */
+        .subpage-header {
+            margin-bottom: 2.5rem;
+            border-left: 5px solid var(--verde-neon);
+            padding-left: 1.5rem;
+        }
+
+        .subpage-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #fff;
+        }
+
+        .subpage-header p {
+            color: var(--verde-hoja);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--jungla-base);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--jungla-mid);
+            box-shadow: 0 10px 30px var(--sombra-bosque);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--verde-neon);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-container img {
+            transform: scale(1.08);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body h3 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: var(--crema-liana);
+            margin-bottom: 1.2rem;
+        }
+
+        .ref-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--verde-neon);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: gap 0.2s;
+        }
+
+        .ref-link:hover {
+            gap: 0.8rem;
+        }
+
+        /* --- SECCIÓN BATERÍA DE PRESUPUESTO INTERACTIVA --- */
+        .battery-section {
+            background: var(--jungla-base);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            border: 2px solid var(--jungla-mid);
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            box-shadow: 0 15px 35px var(--sombra-bosque);
+        }
+
+        .battery-container {
+            width: 100%;
+            max-width: 700px;
+            height: 90px;
+            background: var(--jungla-dark);
+            border: 4px solid var(--jungla-mid);
+            border-radius: 20px;
+            margin: 2.5rem auto 1.5rem;
+            padding: 6px;
+            position: relative;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        /* Capuchón de la Batería */
+        .battery-container::after {
+            content: '';
+            position: absolute;
+            right: -18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 40px;
+            background: var(--jungla-mid);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .battery-level {
+            height: 100%;
+            width: 15%; /* Inicio por defecto */
+            background: linear-gradient(90deg, var(--verde-hoja), var(--verde-neon));
+            border-radius: 12px;
+            transition: width 0.4s ease, background 0.4s ease;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+        }
+
+        .battery-stats {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .budget-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .budget-btn {
+            background: var(--jungla-mid);
+            color: #fff;
+            border: 1px solid var(--verde-hoja);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .budget-btn:hover {
+            background: var(--verde-hoja);
+            transform: scale(1.05);
+        }
+
+        .reset-btn {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff5555;
+        }
+
+        .reset-btn:hover {
+            background: #ff5555;
+        }
+
+        /* Modal Misión Cumplida */
+        .mission-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 31, 28, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .mission-modal.active {
+            display: flex;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .mission-modal h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--verde-neon);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+        }
+
+        .mission-modal p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--jungla-dark);
+            border-top: 1px solid var(--jungla-mid);
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+            color: var(--jungla-mid);
+            font-size: 0.9rem;
+        }
+
+        footer span {
+            color: var(--verde-hoja);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="showPage('home')">
+                <span class="logo-icon"></span> GuateVerde
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="showPage('home')">Inicio</a></li>
+                <li><a href="#corredores" onclick="showPage('p1')">1. Corredores</a></li>
+                <li><a href="#techos" onclick="showPage('p2')">2. Techos</a></li>
+                <li><a href="#barrancos" onclick="showPage('p3')">3. Barrancos</a></li>
+                <li><a href="#paradas" onclick="showPage('p4')">4. Bus Verde</a></li>
+                <li><a href="#calles" onclick="showPage('p5')">5. Calles</a></li>
+                <li><a href="#bosques" onclick="showPage('p6')">6. Bosques Urb.</a></li>
+                <li><a href="#huertos" onclick="showPage('p7')">7. Huertos</a></li>
+                <li><a href="#drenajes" onclick="showPage('p8')">8. Drenajes</a></li>
+                <li><a href="#ciclovias" onclick="showPage('p9')">9. Ciclovías</a></li>
+                <li><a href="#parques" onclick="showPage('p10')">10. Parques Verticales</a></li>
+                <li><a href="#presupuesto" onclick="showPage('presupuesto')" style="color: var(--verde-neon);">⚡ Presupuesto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ================= PÁGINA PRINCIPAL ================= -->
+        <section id="home" class="page-view active">
+            <div class="hero">
+                <h1>Una Jungla Verde para la <span>Ciudad de Guatemala</span></h1>
+                <p>Propuesta integral de infraestructura biofílica para transformar nuestra capital en un ecosistema autosostenible, fresco y lleno de vida.</p>
+                <a href="#presupuesto" class="cta-btn" onclick="showPage('presupuesto')">Simular Presupuesto Interactivo</a>
+            </div>
+
+            <div style="margin-top: 4rem;">
+                <div class="subpage-header">
+                    <h2>Ejes Principales del Proyecto</h2>
+                    <p>Haz clic en cualquier categoría del menú superior o explora las áreas prioritarias.</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-img-container">
+                            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" alt="Naturaleza Urbana">
+                        </div>
+                        <div class="card-body">
+                            3. Recuperación de Barrancos
+                            Nuestros ecosistemas naturales más valiosos, transformados en parques ecológicos protegidos.
+                            <a href="#" class="ref-link" onclick="showPage('p3')">Ver propuesta completa &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img-container">
+                            <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=800&q=80" alt="Arquitectura Verde">
+                        </div>
+                        <div class="card-body">
+                            10. Parques y Torres Verticales
+                            Integrando vegetación autóctona directamente en las fachadas de los edificios de alta densidad.
+                            <a href="#" class="ref-link" onclick="showPage('p10')">Ver propuesta completa &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 1 ================= -->
+        <section id="p1" class="page-view">
+            <div class="subpage-header">
+                <h2>1. Corredores Biológicos Urbanos</h2>
+                <p>Rutas verdes continuas para conectar el flujo de fauna silvestre y reducir islas de calor.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=800&q=80" alt="Corredor verde">
+                    </div>
+                    <div class="card-body">
+                        Propuesta para Bulevar Liberación y Reforma
+                        Reforestación intensiva en camellones centrales con flora nativa (Matilisguates y Hormigos) para conectar el Zoológico La Aurora con el barranco de la Zona 10.
+                        <a href="https://www.pinterest.com/search/pins/?q=green%20urban%20corridors" target="_blank" class="ref-link">Inspiración en Pinterest ↗</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80" alt="Medellín Parques del Río">
+                    </div>
+                    <div class="card-body">
+                        Referencia Global: Corredores Verdes de Medellín
+                        Medellín redujo la temperatura promedio de la ciudad en 2°C mediante la creación de 30 corredores verdes conectados.
+                        <a href="https://www.agenciapublicadenoticias.com" target="_blank" class="ref-link">Ver Caso de Estudio ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 2 ================= -->
+        <section id="p2" class="page-view">
+            <div class="subpage-header">
+                <h2>2. Techos Verdes Obligatorios</h2>
+                <p>Transformación de las azoteas de la Zona 1, 4, 10 y 14 en pulmones oxigenadores.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80" alt="Techo Verde">
+                    </div>
+                    <div class="card-body">
+                        Incentivo Fiscal para Edificios Comerciales
+                        Proponemos una rebaja del IUSI a empresas que conviertan más del 60% de sus terrazas en cobertura vegetal retentora de agua de lluvia.
+                        <a href="https://www.pinterest.com/search/pins/?q=rooftop%20gardens%20architecture" target="_blank" class="ref-link">Ver Diseños en Pinterest ↗</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=800&q=80" alt="Referencia Basilea">
+                    </div>
+                    <div class="card-body">
+                        Referencia Global: Ley de Techos Verdes en Basilea
+                        En Suiza es obligatorio que todas las construcciones nuevas con techo plano destinen espacio para hábitats de biodiversidad.
+                        <a href="https://www.greenroofs.com" target="_blank" class="ref-link">Leer sobre la normativa ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 3 ================= -->
+        <section id="p3" class="page-view">
+            <div class="subpage-header">
+                <h2>3. Parques Ecológicos en Barrancos</h2>
+                <p>El 40% del municipio son barrancos. Es momento de limpiarlos y darles valor recreativo.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="Senderos en Bosque">
+                    </div>
+                    <div class="card-body">
+                        Senderos Seguros en Barrancos de Zona 15 y 16
+                        Instalación de pasarelas elevadas de madera sostenible, iluminación solar y casetas de monitoreo ambiental y seguridad.
+                        <a href="https://www.pinterest.com/search/pins/?q=elevated%20forest%20walkway" target="_blank" class="ref-link">Galería Pinterest ↗</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80" alt="Bosque Protector">
+                    </div>
+                    <div class="card-body">
+                        Bio-Estabilización de Taludes
+                        Uso de vetiver y vegetación profunda para evitar deslaves durante la época lluviosa en zonas de riesgo.
+                        <a href="https://www.vetiver.org" target="_blank" class="ref-link">Red Internacional Vetiver ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 4 ================= -->
+        <section id="p4" class="page-view">
+            <div class="subpage-header">
+                <h2>4. Paradas de Transmetro y Bús Verde</h2>
+                <p>Infraestructura de transporte público integrada con jardines verticales e hitos verdes.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80" alt="Parada verde">
+                    </div>
+                    <div class="card-body">
+                        Estaciones Polinizadoras
+                        Cubiertas vegetales en las paradas del Transmetro repletas de flores nativas para atraer abejas y colibríes en medio del tráfico urbano.
+                        <a href="https://www.pinterest.com/search/pins/?q=green%20bus%20stop" target="_blank" class="ref-link">Ejemplos en Pinterest ↗</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80" alt="Utrecht bus stop">
+                    </div>
+                    <div class="card-body">
+                        Referencia Global: Paradas para Abejas en Utrecht
+                        La ciudad neerlandesa de Utrecht cubrió más de 300 paradas de autobús con vegetación Sedum.
+                        <a href="https://www.utrecht.nl" target="_blank" class="ref-link">Ver Proyecto Oficial ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 5 ================= -->
+        <section id="p5" class="page-view">
+            <div class="subpage-header">
+                <h2>5. Calles Arboladas y Peatonales</h2>
+                <p>Transformación del asfalto inútil en aceras amplias cubiertas por copas de árboles.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=800&q=80" alt="Calle Verde">
+                    </div>
+                    <div class="card-body">
+                        Sombra Natural en Paseo de la Sexta y Zona 4
+                        Ampliación de alcorques y siembra de especies de copa ancha para que peatones caminen bajo la sombra sin sufrir calor extremo.
+                        <a href="https://www.pinterest.com/search/pins/?q=pedestrian%20green%20street" target="_blank" class="ref-link">Ideas en Pinterest ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 6 ================= -->
+        <section id="p6" class="page-view">
+            <div class="subpage-header">
+                <h2>6. Micro-Bosques Urbanos (Miyawaki)</h2>
+                <p>Método de reforestación ultrarrápida en lotes baldíos o esquinas olvidadas.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="Micro bosque">
+                    </div>
+                    <div class="card-body">
+                        Bosques Densos en Zonas 9 y 12
+                        Implementación del método Akira Miyawaki para lograr bosques 10 veces más rápidos y 30 veces más densos en terrenos reducidos.
+                        <a href="https://www.pinterest.com/search/pins/?q=miyawaki%20forest" target="_blank" class="ref-link">Ver Método Miyawaki ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 7 ================= -->
+        <section id="p7" class="page-view">
+            <div class="subpage-header">
+                <h2>7. Huertos Comunitarios de Jungla</h2>
+                <p>Espacios de agricultura urbana donde la comunidad cultiva alimentos orgánicos.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80" alt="Huerto Urbano">
+                    </div>
+                    <div class="card-body">
+                        Red de Huertos en Barriadas y Colonias
+                        Uso de permacultura para producir maíz, frijol, hierva mora y hortalizas alimentadas por compostaje local.
+                        <a href="https://www.pinterest.com/search/pins/?q=community%20urban%20garden" target="_blank" class="ref-link">Pinterest Huertos ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 8 ================= -->
+        <section id="p8" class="page-view">
+            <div class="subpage-header">
+                <h2>8. Drenajes Sostenibles (SUDs)</h2>
+                <p>Jardines de lluvia para filtrar el agua pluvial y evitar inundaciones en la ciudad.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" alt="Jardines de lluvia">
+                    </div>
+                    <div class="card-body">
+                        Bio-retención en Calzada Roosevelt
+                        Sustitución de arriates de concreto por bioswales (zanjas verdes de infiltración) para recargar el acuífero del valle de Guatemala.
+                        <a href="https://www.pinterest.com/search/pins/?q=rain%20gardens%20bioswales" target="_blank" class="ref-link">Ver Bioswales en Pinterest ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 9 ================= -->
+        <section id="p9" class="page-view">
+            <div class="subpage-header">
+                <h2>9. Red de Ciclovías Sombra</h2>
+                <p>Rutas para bicicletas totalmente protegidas del sol y la lluvia por túneles de vegetación.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80" alt="Ciclovía Verde">
+                    </div>
+                    <div class="card-body">
+                        Conexión Universidad de San Carlos - Zona 10
+                        Una autopista verde exclusiva para micro-movilidad eléctrica y bicicletas, rodeada de árboles frutales y vegetación.
+                        <a href="https://www.pinterest.com/search/pins/?q=green%20bike%20path" target="_blank" class="ref-link">Pinterest Ciclovías ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SUBPÁGINA 10 ================= -->
+        <section id="p10" class="page-view">
+            <div class="subpage-header">
+                <h2>10. Arquitectura Biofílica y Torres Verdes</h2>
+                <p>Reglamento para que todo nuevo rascacielos incorpore jardines verticales masivos.</p>
+            </div>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=800&q=80" alt="Bosque Vertical">
+                    </div>
+                    <div class="card-body">
+                        Torres de Oxígeno en Zona 14
+                        Fachadas cubiertas de enredaderas sostenibles que filtran el esmog y producen oxígeno fresco para los residentes.
+                        <a href="https://www.pinterest.com/search/pins/?q=vertical%20forest%20building" target="_blank" class="ref-link">Ver Torres en Pinterest ↗</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1518005068251-37900150df60?auto=format&fit=crop&w=800&q=80" alt="Bosco Verticale Milan">
+                    </div>
+                    <div class="card-body">
+                        Referencia Global: Bosco Verticale (Milán)
+                        El proyecto icónico de Stefano Boeri que alberga más de 800 árboles y 15,000 plantas en dos torres.
+                        <a href="https://www.stefanoboeriarchitetti.net" target="_blank" class="ref-link">Sitio Oficial de la Referencia ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PÁGINA INTERACTIVA: PRESUPUESTO ================= -->
+        <section id="presupuesto" class="page-view">
+            <div class="subpage-header">
+                <h2>Simulador Interactivo de Presupuesto Municipal</h2>
+                <p>Asigna los fondos para completar la carga de la batería verde y transformar la Ciudad de Guatemala.</p>
+            </div>
+
+            <div class="battery-section">
+                <h3>Estado del Fondo Verde Municipal</h3>
+                
+                <div class="battery-container">
+                    <div class="battery-level" id="batteryFill"></div>
+                </div>
+
+                <div class="battery-stats">
+                    Total Invertido: <span id="budgetAmount" style="color: var(--verde-neon);">$15,000,000</span> / $100,000,000 USD
+                </div>
+
+                <p style="color: var(--crema-liana); max-width: 600px; margin: 0 auto;">
+                    Selecciona los componentes que deseas financiar para alcanzar el 100% de la meta de inversión verde.
+                </p>
+
+                <div class="budget-controls">
+                    <button class="budget-btn" onclick="addBudget(10)">+ $10M: Reforestar Barrancos</button>
+                    <button class="budget-btn" onclick="addBudget(15)">+ $15M: Red de Ciclovías</button>
+                    <button class="budget-btn" onclick="addBudget(20)">+ $20M: Techos y Fachadas</button>
+                    <button class="budget-btn" onclick="addBudget(25)">+ $25M: Corredores Biológicos</button>
+                    <button class="budget-btn reset-btn" onclick="resetBudget()">Reiniciar Batería</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Misión Cumplida -->
+    <div class="mission-modal" id="missionModal">
+        <h2>¡MISIÓN CUMPLIDA! 🌿🇬🇹</h2>
+        <p>Has alcanzado el 100% del presupuesto necesario. La Ciudad de Guatemala se ha transformado oficialmente en una Jungla Urbana autosostenible y verde.</p>
+        <button class="cta-btn" onclick="closeModal()">Explorar la Ciudad Verde</button>
+    </div>
+
+    <footer>
+        <p>© 2026 <span>GuateVerde Project</span> - Propuesta Ciudadana de Transformación Biofílica para la Ciudad de Guatemala.</p>
+    </footer>
+
+    <script>
+        // LÓGICA DE NAVEGACIÓN ENTRE SECCIONES / SUBPÁGINAS
+        function showPage(pageId) {
+            // Ocultar todas las páginas
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Remover clase active de enlaces
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Mostrar página seleccionada
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            // Mover scroll al inicio del contenedor
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // LÓGICA INTERACTIVA DE LA BATERÍA DE PRESUPUESTO
+        let currentBudget = 15; // Inicia en 15 Millones
+        const maxBudget = 100;
+
+        function updateBattery() {
+            const fillElement = document.getElementById('batteryFill');
+            const amountElement = document.getElementById('budgetAmount');
+            
+            // Limitar a máximo 100
+            if (currentBudget > maxBudget) currentBudget = maxBudget;
+
+            // Calcular porcentaje
+            const percentage = (currentBudget / maxBudget) * 100;
+            fillElement.style.width = percentage + '%';
+            amountElement.textContent = '$' + currentBudget + ',000,000';
+
+            // Cambiar color a rojo si está muy bajo, amarillo/verde según la carga
+            if (percentage >= 100) {
+                fillElement.style.background = 'var(--verde-neon)';
+                fillElement.style.boxShadow = '0 0 25px var(--verde-neon)';
+                setTimeout(triggerMissionComplete, 400);
+            } else if (percentage > 50) {
+                fillElement.style.background = 'linear-gradient(90deg, #4E9F3D, #39FF14)';
+            } else {
+                fillElement.style.background = 'linear-gradient(90deg, #FFB319, #4E9F3D)';
+            }
+        }
+
+        function addBudget(amount) {
+            if (currentBudget < maxBudget) {
+                currentBudget += amount;
+                updateBattery();
+            }
+        }
+
+        function resetBudget() {
+            currentBudget = 0;
+            updateBattery();
+        }
+
+        function triggerMissionComplete() {
+            document.getElementById('missionModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('missionModal').classList.remove('active');
+        }
+
+        // Inicializar estado de batería al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            updateBattery();
+        });
+    </script>
+</body>
+</html>
